@@ -9,11 +9,22 @@ public class Room {
     private Hashtable<String, String> exits; // valid exit directions from this room mapped to neighboring room names in a Hashtable
                                             // i.e. ["south": "(2-1-0)"", "east": "(2-0-1)"] 
 
-    public Room(int aLevel, int aRow, int aColumn) {
+    /**
+     * @param Level: Integer
+     * @param Row: Integer
+     * @param Column: Integer
+     * 
+     * Constructs the room object based on its level, row, and column coordinates.
+     * Rooms have level, row, and column coordinates, 
+     * as well as a name generated from these coordinates,
+     * and a mapping of valid standard exit directions and room numbers 
+     * (blinkers and abnormal movement pattern excepted)
+     */
+    public Room(int level, int row, int column) {
         // constructor
-        this.level = aLevel;
-        this.row = aRow;
-        this.column = aColumn;
+        this.level = level;
+        this.row = row;
+        this.column = column;
         
         this.name = new String("(" + level + "-" + row + "-" + column + ")");
 
@@ -22,6 +33,19 @@ public class Room {
     }
 
 
+    /**
+     * @return exit: Hashtable<String, String> (cardinal direction, neighboring room name)
+     * 
+     * This method finds the valid standard exits for each rooom based on its 
+     * level, row, and column coordinates.
+     * 
+     * At first I thought about having a separate Exit class (though that name is kind of confusing -- exiting the game?)
+     * to add the doorways and stairwells to the map. But it doesn't seem necessary.
+     * 
+     * Since, we already know all valid rooom names,
+     * we can generate exit connections when each rooom is generated
+     * without needing to wait for an object containing all of the rooms to exist.
+     */
     private Hashtable<String, String> findExits() {
         Hashtable<String, String> exits = new Hashtable<String, String>();
 
@@ -77,13 +101,33 @@ public class Room {
     }
 
 
+    /**
+     * @return name: String
+     * 
+     * Let other classes grab a room's name
+     */
     public String getName() {
         return name;
     }
 
 
+    /**
+     * @return exits: Hashtable<String, String> (cardinal directions, neighboring room names)
+     * 
+     * Let other classess access a room's neighboring rooms (and in what direction if we need that)
+     */
     public Hashtable<String, String> getExits() {
         return exits;
     }
 
+    
+    /**
+     * @return level: Integer
+     * 
+     * Let other classess easily access a room's level
+     * Might be needed for creatures whose movement may be limited to one level.
+     */
+    public Integer getLevel() {
+        return level;
+    }
 }
